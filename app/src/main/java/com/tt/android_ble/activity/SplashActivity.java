@@ -1,7 +1,9 @@
-package com.tt.android_ble;
+package com.tt.android_ble.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.tt.android_ble.R;
 
 public class SplashActivity extends AppCompatActivity {
 
