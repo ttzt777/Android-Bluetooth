@@ -2,6 +2,11 @@
     <string name="app_name">Android-BLE</string>
     <string name="title_activity_main_layout">MainLayoutActivity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="home_functions">
+        <item>BLE</item>
+        <item>SPP</item>
+        <item>音频连接</item>
+        <item>我的设备</item>
+    </string-array>
 </resources>

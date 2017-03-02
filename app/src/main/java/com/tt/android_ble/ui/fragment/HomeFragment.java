@@ -3,19 +3,27 @@ package com.tt.android_ble.ui.fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.tt.android_ble.R;
 
-public class HomeFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    private String mParam1;
-    private String mParam2;
+public class HomeFragment extends Fragment {
+    private static final String TAG = HomeFragment.class.getCanonicalName();
+
+    @BindView(R.id.tl_home_toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.rv_home_menu)
+    RecyclerView homeMenuRecyclerView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -23,12 +31,8 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static HomeFragment newInstance(String param1, String param2) {
+    public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -36,16 +40,15 @@ public class HomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home_layout, container, false);
+        View view =  inflater.inflate(R.layout.fragment_home_layout, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     public void onButtonPressed(Uri uri) {
