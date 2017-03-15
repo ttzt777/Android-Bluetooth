@@ -1,26 +1,21 @@
 package com.tt.android_ble.ui.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.tt.android_ble.R;
 import com.tt.android_ble.ui.adapter.HomeFuncAdapter;
 import com.tt.android_ble.ui.decoration.HomeFuncItemDecoration;
 
-import butterknife.BindString;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
-public class HomeFragment extends Fragment implements HomeFuncAdapter.Callback{
+public class HomeFragment extends BaseFragment implements HomeFuncAdapter.Callback{
     private static final String TAG = HomeFragment.class.getCanonicalName();
 
     @BindView(R.id.tl_home_toolbar)
@@ -33,10 +28,7 @@ public class HomeFragment extends Fragment implements HomeFuncAdapter.Callback{
 
     private HomeFuncAdapter adapter;
 
-    private OnFragmentInteractionListener mListener;
-
     public HomeFragment() {
-        // Required empty public constructor
     }
 
     public static HomeFragment newInstance() {
@@ -47,19 +39,21 @@ public class HomeFragment extends Fragment implements HomeFuncAdapter.Callback{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: ");
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_home_layout, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: ");
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onViewCreated: ");
         super.onViewCreated(view, savedInstanceState);
+
+        setupToolbar();
         functions = getResources().getStringArray(R.array.home_functions);
         adapter = new HomeFuncAdapter(functions, this);
 
@@ -68,35 +62,23 @@ public class HomeFragment extends Fragment implements HomeFuncAdapter.Callback{
         homeMenuRecyclerView.setAdapter(adapter);
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "onActivityCreated: ");
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            //throw new RuntimeException(context.toString()
-              //      + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
+    public int getLayoutId() {
+        return R.layout.fragment_home_layout;
     }
 
     @Override
     public void onFuncClick(int position) {
-
+        navigator.openFunctionScreen(position);
     }
 
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
+    private void setupToolbar() {
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
     }
 }

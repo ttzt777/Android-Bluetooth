@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.tt.android_ble.R;
+import com.tt.android_ble.util.StatusBarUtil;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -13,6 +14,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_layout);
+        StatusBarUtil.setTranslucent(this, 0x00);
 
         new Handler().postDelayed(new Runnable() {
             @Override
