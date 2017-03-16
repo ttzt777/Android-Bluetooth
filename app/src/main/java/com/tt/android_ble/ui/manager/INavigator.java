@@ -1,5 +1,6 @@
 package com.tt.android_ble.ui.manager;
 
+import android.app.Activity;
 import android.support.v4.app.FragmentTransaction;
 
 /**
@@ -14,6 +15,9 @@ import android.support.v4.app.FragmentTransaction;
  * -------------------------------------------------
  */
 public interface INavigator {
+
+    Activity getActivity();
+
     void onBackPressed();
 
     void openFunctionScreen(int navigator);

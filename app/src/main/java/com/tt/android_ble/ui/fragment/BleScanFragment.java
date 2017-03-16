@@ -1,5 +1,8 @@
 package com.tt.android_ble.ui.fragment;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +33,8 @@ import butterknife.OnClick;
  */
 public class BleScanFragment extends BaseFragment implements BleScanContract.View {
     private static final String TAG = BleFragment.class.getSimpleName();
+
+    public static final int REQUEST_ENABLE_BT = 1;
 
     @BindView(R.id.ll_ble_scanning_layout)
     LinearLayout mScanningLayout;
@@ -65,9 +70,18 @@ public class BleScanFragment extends BaseFragment implements BleScanContract.Vie
         super.onViewCreated(view, savedInstanceState);
 
         presenter = new BleScanPresenter(this, navigator);
-        presenter.startScan();
 
         setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!presenter.isBluetoothEnable()) {
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(intent, REQUEST_ENABLE_BT);
+        }
     }
 
     @Override
@@ -77,12 +91,31 @@ public class BleScanFragment extends BaseFragment implements BleScanContract.Vie
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_ble_scan_refresh) {
+            presenter.startScan();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
+            navigator.onBackPressed();
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public int getLayoutId() {
         return R.layout.fragment_ble_scan_layout;
+    }
+
+    @Override
+    public void finish() {
+        navigator.onBackPressed();
     }
 
     @Override
@@ -108,7 +141,7 @@ public class BleScanFragment extends BaseFragment implements BleScanContract.Vie
 
     @OnClick(R.id.bt_ble_scan_again)
     public void onScanAgainClick() {
-        navigator.bleShowDetailFragment();
+        presenter.startScan();
     }
 
     @OnClick(R.id.bt_ble_exit)

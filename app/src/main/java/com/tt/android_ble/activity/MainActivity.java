@@ -1,6 +1,10 @@
 package com.tt.android_ble.activity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.StringDef;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
@@ -25,6 +29,11 @@ public class MainActivity extends AppCompatActivity implements INavigator{
         navigableStateContext = new NavigableStateContext(this);
 
         navigableStateContext.initMainLayout();
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
     }
 
     @Override

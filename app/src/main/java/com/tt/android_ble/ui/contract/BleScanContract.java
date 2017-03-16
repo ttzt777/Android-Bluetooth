@@ -15,6 +15,8 @@ import com.tt.android_ble.ui.manager.INavigator;
  */
 public interface BleScanContract {
     interface View {
+        void finish();
+
         void displayScanningLayout();
 
         void displayNoResultLayout();
@@ -24,5 +26,7 @@ public interface BleScanContract {
 
     interface Presenter extends IPresenter<INavigator> {
         void startScan();
+
+        boolean isBluetoothEnable();
     }
 }
