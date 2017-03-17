@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:background="@drawable/selector_module_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="22dp"
+        android:layout_marginRight="72dp"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_item_ble_scan_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BLE Devices Name Display"
+            android:textSize="16sp"
+            android:textColor="@color/app_text_title"
+            android:ellipsize="end"
+            android:lines="1"/>
+
+        <TextView
+            android:id="@+id/tv_item_ble_scan_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="AA:CC:CC:CC::CC:CC:C"
+            android:layout_marginTop="5dp"
+            android:textSize="12sp"
+            android:textColor="@color/app_text_subTitle"
+            android:ellipsize="end"
+            android:lines="1"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_item_ble_scan_more"
+        android:layout_width="wrap_content"
+        android:src="@drawable/ic_more_horiz_black_36dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="18dp"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

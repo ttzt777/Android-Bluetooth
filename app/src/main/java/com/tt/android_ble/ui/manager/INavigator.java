@@ -18,6 +18,8 @@ public interface INavigator {
 
     Activity getActivity();
 
+    void updateOptionsMenu();
+
     void onBackPressed();
 
     void openFunctionScreen(int navigator);

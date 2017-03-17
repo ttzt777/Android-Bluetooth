@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -25,8 +26,8 @@ public class PermissionHandler {
 
     public static final int REQUEST_CODE_ASK_PERMISSION = 0;
 
-    private static final int PERMISSION_GRANTED = PackageManager.PERMISSION_GRANTED;
-    private static final int PERMISSION_DENIED = PackageManager.PERMISSION_DENIED;
+    public static final int PERMISSION_GRANTED = PackageManager.PERMISSION_GRANTED;
+    public static final int PERMISSION_DENIED = PackageManager.PERMISSION_DENIED;
 
     /** 权限请求状态 */
     private boolean mPermissionRequestInProgress = false;
@@ -46,7 +47,7 @@ public class PermissionHandler {
      * @param permissions 权限集合
      * @return 全部权限授权状态 true -- 全部权限授权  false -- 非所有权限都授权
      */
-    public boolean checkPermissions(Activity activity, String... permissions) {
+    public static boolean checkPermissions(Activity activity, String... permissions) {
         for (String permission : permissions) {
             if (!checkPermission(activity, permission)) {
                 return false;
@@ -62,7 +63,7 @@ public class PermissionHandler {
      * @param permission 权限
      * @return 权限授权状态 true -- 权限授权  false -- 权限拒绝
      */
-    public boolean checkPermission(Activity activity, String permission){
+    public static boolean checkPermission(Activity activity, String permission){
         int permissionSystemStatus = ActivityCompat.checkSelfPermission(activity, permission);
         Log.d(TAG, "checkPermission: " + permission + " -- " + permissionSystemStatus);
         return permissionSystemStatus == PackageManager.PERMISSION_GRANTED;
@@ -93,6 +94,7 @@ public class PermissionHandler {
         }
 
         if (mNeedRequestPermissions.isEmpty()) {
+            notifyListener();
             Log.d(TAG, "requestPermissions: all permissions processed");
         } else {
             String[] needToRequestPermissionsArray = mNeedRequestPermissions.toArray(new String[mNeedRequestPermissions.size()]);

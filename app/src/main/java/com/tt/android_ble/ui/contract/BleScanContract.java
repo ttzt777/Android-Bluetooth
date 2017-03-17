@@ -1,6 +1,10 @@
 package com.tt.android_ble.ui.contract;
 
+import android.bluetooth.BluetoothDevice;
+
 import com.tt.android_ble.ui.manager.INavigator;
+
+import java.util.List;
 
 /**
  * -------------------------------------------------
@@ -22,10 +26,12 @@ public interface BleScanContract {
         void displayNoResultLayout();
 
         void displayResultLayout();
+
+        void updateData(List<BluetoothDevice> deviceList);
     }
 
     interface Presenter extends IPresenter<INavigator> {
-        void startScan();
+        void startScan(boolean reScan);
 
         boolean isBluetoothEnable();
     }

@@ -32,8 +32,17 @@ public class MainActivity extends AppCompatActivity implements INavigator{
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
     public Activity getActivity() {
         return this;
+    }
+
+    public void updateOptionsMenu() {
+        invalidateOptionsMenu();
     }
 
     @Override

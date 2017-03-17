@@ -1,10 +1,8 @@
 package com.tt.android_ble.bluetooth.le;
 
-import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.le.BluetoothLeScanner;
-import android.os.Build;
+import android.util.Log;
 
 /**
  * -------------------------------------------------
@@ -17,14 +15,13 @@ import android.os.Build;
  * V0.0.1 --
  * -------------------------------------------------
  */
-public class BleScannerV18 implements IBleScanner{
-    public static final int SCAN_PERIOD = 5000;
-
-    private boolean mScanning = false;
+public class BleScannerV18 extends BleScanner{
+    private static final String TAG = BleScannerV18.class.getSimpleName();
 
     private BluetoothAdapter mBluetoothAdapter;
 
-    public BleScannerV18(BluetoothAdapter mBluetoothAdapter) {
+    public BleScannerV18(BluetoothAdapter mBluetoothAdapter, IBleScanner.Callback listener) {
+        super(listener);
         this.mBluetoothAdapter = mBluetoothAdapter;
     }
 
@@ -33,28 +30,22 @@ public class BleScannerV18 implements IBleScanner{
     }
 
     @SuppressWarnings("deprecation")
-    public void startScan() {
-        if (mScanning) {
-            return;
-        }
-
-        mScanning = true;
-
+    public void startScanImpl() {
         mBluetoothAdapter.startLeScan(mLeScanCallback);
     }
 
-    public void stopScan() {
-        if (!mScanning) {
-            return;
-        }
+    @SuppressWarnings("deprecation")
+    public void stopScanImpl() {
+        mBluetoothAdapter.stopLeScan(mLeScanCallback);
     }
-
-
 
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(BluetoothDevice bluetoothDevice, int i, byte[] bytes) {
-
+            Log.d(TAG, "device info: name -- " + bluetoothDevice.getName()
+                    + "\r\n address -- " + bluetoothDevice.getAddress()
+                    + "\r\n rssi == " + i);
+            deviceList.add(bluetoothDevice);
         }
     };
 
