@@ -54,10 +54,7 @@ public class BleScannerV21 extends BleScanner{
     private ScanCallback mLeCallback = new ScanCallback() {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
-            BluetoothDevice bluetoothDevice = result.getDevice();
-            Log.d(TAG, "device info: name -- " + bluetoothDevice.getName()
-                    + "/r/n address -- " + bluetoothDevice.getAddress());
-            deviceList.add(result.getDevice());
+            addDevice(result.getDevice());
         }
 
         @Override

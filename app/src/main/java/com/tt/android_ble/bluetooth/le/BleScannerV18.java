@@ -42,10 +42,7 @@ public class BleScannerV18 extends BleScanner{
     private BluetoothAdapter.LeScanCallback mLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(BluetoothDevice bluetoothDevice, int i, byte[] bytes) {
-            Log.d(TAG, "device info: name -- " + bluetoothDevice.getName()
-                    + "\r\n address -- " + bluetoothDevice.getAddress()
-                    + "\r\n rssi == " + i);
-            deviceList.add(bluetoothDevice);
+            addDevice(bluetoothDevice);
         }
     };
 

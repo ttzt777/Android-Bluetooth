@@ -2,6 +2,7 @@ package com.tt.android_ble.ui.manager;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 
 import com.tt.android_ble.R;
 import com.tt.android_ble.activity.MainActivity;
@@ -23,6 +24,7 @@ import com.tt.android_ble.ui.fragment.HomeFragment;
  * -------------------------------------------------
  */
 public class NavigableStateContext {
+    private static final String TAG = NavigableStateContext.class.getSimpleName();
 
     public static final int NAVIGATOR_TO_BLE = 0;
     public static final int NAVIGATOR_TO_SPP = 1;
@@ -83,6 +85,8 @@ public class NavigableStateContext {
     }
 
     private void changeFragment(Fragment fragment, FragmentTransaction transaction, int layoutId, Transitions transition, boolean addToBackStack) {
+        Log.d(TAG, "changeFragment: " + fragment.getClass().getSimpleName());
+
         if (transaction == null) {
             transaction = mActivity.getSupportFragmentManager().beginTransaction();
         }

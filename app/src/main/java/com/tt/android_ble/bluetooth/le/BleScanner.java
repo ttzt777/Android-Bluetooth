@@ -2,6 +2,7 @@ package com.tt.android_ble.bluetooth.le;
 
 import android.bluetooth.BluetoothDevice;
 import android.os.Handler;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
  * -------------------------------------------------
  */
 public abstract class BleScanner implements IBleScanner {
+    private static final String TAG = BleScanner.class.getSimpleName();
 
     private boolean mScanning;
 
@@ -76,4 +78,19 @@ public abstract class BleScanner implements IBleScanner {
     public abstract void startScanImpl();
 
     public abstract void stopScanImpl();
+
+    public void addDevice(BluetoothDevice bluetoothDevice) {
+        Log.d(TAG, "device info: name -- " + bluetoothDevice.getName()
+                + "\r\n address -- " + bluetoothDevice.getAddress());
+
+        if (deviceList.size() != 0) {
+            for (BluetoothDevice device : deviceList) {
+                if (device.getAddress().equals(bluetoothDevice.getAddress())) {
+                    return;
+                }
+            }
+        }
+
+        deviceList.add(bluetoothDevice);
+    }
 }

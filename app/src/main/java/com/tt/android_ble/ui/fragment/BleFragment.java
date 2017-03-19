@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 
 import com.tt.android_ble.R;
 import com.tt.android_ble.util.DensityUtil;
+import com.tt.android_ble.util.PermissionHandler;
 
 import butterknife.BindView;
 
@@ -51,9 +52,17 @@ public class BleFragment extends BaseFragment {
 
         setupToolbar();
 
-        if (getChildFragmentManager().findFragmentById(R.id.fl_ble_content) == null) {
+        if (!checkSavedFragment(savedInstanceState) && getChildFragmentManager().findFragmentById(R.id.fl_ble_content) == null) {
             navigator.bleInitScanFragment(getChildFragmentManager().beginTransaction());
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        if (getChildFragmentManager().findFragmentById(R.id.fl_ble_content) == null) {
+            outState.putBoolean("fragmentAlreadyInit", true);
+        }
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -71,5 +80,13 @@ public class BleFragment extends BaseFragment {
             }
         });
         toolbar.setTitle("BLE");
+    }
+
+    private boolean checkSavedFragment(Bundle savedInstanceState) {
+        if (savedInstanceState != null && savedInstanceState.getBoolean("fragmentAlreadyInit")) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -16,7 +16,7 @@ import com.tt.android_ble.ui.decoration.HomeFuncItemDecoration;
 import butterknife.BindView;
 
 public class HomeFragment extends BaseFragment implements HomeFuncAdapter.Callback{
-    private static final String TAG = HomeFragment.class.getCanonicalName();
+    private static final String TAG = HomeFragment.class.getSimpleName();
 
     @BindView(R.id.tl_home_toolbar)
     Toolbar toolbar;

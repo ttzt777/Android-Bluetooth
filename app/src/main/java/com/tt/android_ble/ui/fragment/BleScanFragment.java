@@ -19,6 +19,7 @@ import com.tt.android_ble.R;
 import com.tt.android_ble.app.Constant;
 import com.tt.android_ble.ui.adapter.BleScanResultAdapter;
 import com.tt.android_ble.ui.contract.BleScanContract;
+import com.tt.android_ble.ui.decoration.BleScanResultItemDecoration;
 import com.tt.android_ble.ui.presenter.BleScanPresenter;
 import com.tt.android_ble.util.AppUtil;
 import com.tt.android_ble.util.DialogUtil;
@@ -42,9 +43,7 @@ import butterknife.OnClick;
  */
 public class BleScanFragment extends BaseFragment
         implements BleScanContract.View, BleScanResultAdapter.Callback {
-    private static final String TAG = BleFragment.class.getSimpleName();
-
-
+    private static final String TAG = BleScanFragment.class.getSimpleName();
 
     public static final int REQUEST_ENABLE_BT = 1;
 
@@ -86,6 +85,7 @@ public class BleScanFragment extends BaseFragment
 
         adapter = new BleScanResultAdapter(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.addItemDecoration(new BleScanResultItemDecoration());
         mRecyclerView.setAdapter(adapter);
 
         displayScanningLayout();
