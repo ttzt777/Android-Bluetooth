@@ -50,6 +50,7 @@ public abstract class BaseFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        Log.d(TAG, "onDetach: ");
         super.onDetach();
         navigator = null;
     }

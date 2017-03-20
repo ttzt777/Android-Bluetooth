@@ -72,13 +72,11 @@ public class BleScanPresenter implements BleScanContract.Presenter, IBleScanner.
             return;
         }
 
-        bleScanner = new BleScannerV18(bluetoothAdapter, this);
-
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            bleScanner = new BleScannerV21(bluetoothAdapter, this);
-//        } else {
-//            bleScanner = new BleScannerV18(bluetoothAdapter, this);
-//        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            bleScanner = new BleScannerV21(bluetoothAdapter, this);
+        } else {
+            bleScanner = new BleScannerV18(bluetoothAdapter, this);
+        }
     }
 
     private void scanFinishProcess() {

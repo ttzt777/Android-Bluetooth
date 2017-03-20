@@ -1,8 +1,11 @@
 package com.tt.android_ble.ui.fragment;
 
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -54,7 +57,45 @@ public class BleFragment extends BaseFragment {
 
         if (!checkSavedFragment(savedInstanceState) && getChildFragmentManager().findFragmentById(R.id.fl_ble_content) == null) {
             navigator.bleInitScanFragment(getChildFragmentManager().beginTransaction());
+//            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+//            transaction.replace(R.id.fl_ble_content, BleScanFragment.newInstance(), BleScanFragment.class.getSimpleName());
+//            transaction.commitAllowingStateLoss();
         }
+    }
+
+    @Override
+    public void onStart() {
+        Log.d(TAG, "onStart: ");
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(TAG, "onResume: ");
+        super.onResume();
+    }
+
+    @Override
+    public void onStop() {
+        Log.d(TAG, "onStop: ");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        Log.d(TAG, "onConfigurationChanged: ");
+        super.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "onDestroy: ");
+        super.onDestroy();
     }
 
     @Override
