@@ -2,12 +2,19 @@ package com.tt.android_ble.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.tt.android_ble.R;
+import com.tt.android_ble.ui.adapter.BleDeviceServicesAdapter;
+import com.tt.android_ble.ui.contract.BleDeviceDetailContract;
+import com.tt.android_ble.ui.decoration.BleScanResultItemDecoration;
+import com.tt.android_ble.ui.presenter.BleDeviceDetailPresenter;
 
 import butterknife.BindView;
 
@@ -22,7 +29,7 @@ import butterknife.BindView;
  * V0.0.1 --
  * -------------------------------------------------
  */
-public class BleDeviceDetailFragment extends BaseFragment {
+public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDetailContract.View{
     private static final String TAG = BleDeviceDetailFragment.class.getSimpleName();
 
     private static final String DEVICE_NAME = "device_name";
@@ -40,6 +47,12 @@ public class BleDeviceDetailFragment extends BaseFragment {
     @BindView(R.id.rv_ble_detail_list)
     RecyclerView mServiceList;
 
+    private BleDeviceDetailContract.Presenter presenter;
+
+    private BleDeviceServicesAdapter adapter;
+
+    private AlertDialog connectingDialog;
+
     public static BleDeviceDetailFragment newInstance(String name, String address) {
         BleDeviceDetailFragment fragment = new BleDeviceDetailFragment();
         Bundle args = new Bundle();
@@ -52,8 +65,17 @@ public class BleDeviceDetailFragment extends BaseFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         init(savedInstanceState);
+
+        presenter = new BleDeviceDetailPresenter(this, mDeviceAddress.getText().toString(), navigator);
+
+        presenter.connect();
     }
 
     @Override
@@ -71,8 +93,29 @@ public class BleDeviceDetailFragment extends BaseFragment {
         return R.layout.fragment_ble_device_detail_layout;
     }
 
-    public void toggleStatus(boolean isConnected) {
-        mConnectStatus.setChecked(isConnected);
+    @Override
+    public void showConnecting() {
+        if (connectingDialog == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setCancelable(false);
+            builder.setView(R.layout.dialog_connect_to_device);
+            connectingDialog = builder.create();
+        }
+
+        connectingDialog.show();
+    }
+
+    @Override
+    public void showConnectedLayout() {
+        connectingDialog.dismiss();
+        connectingDialog = null;
+
+        mConnectStatus.setChecked(true);
+    }
+
+    @Override
+    public void showDisConnectLayout() {
+
     }
 
     private void init(@Nullable Bundle savedInstanceState) {
@@ -86,8 +129,21 @@ public class BleDeviceDetailFragment extends BaseFragment {
         mConnectStatus.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+                if (isChecked) {
+                    presenter.connect();
+                } else {
+                    presenter.disConnect();
+                }
             }
         });
+
+        adapter = new BleDeviceServicesAdapter();
+        mServiceList.setLayoutManager(new LinearLayoutManager(getContext()));
+        mServiceList.addItemDecoration(new BleScanResultItemDecoration());
+        mServiceList.setAdapter(adapter);
+    }
+
+    private void toggleStatus(boolean isConnected) {
+        mConnectStatus.setChecked(isConnected);
     }
 }
