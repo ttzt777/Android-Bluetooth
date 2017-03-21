@@ -55,7 +55,7 @@ public abstract class BleScanner implements IBleScanner {
             @Override
             public void run() {
                 // 扫描完成
-                stopScan();
+                stopScanByTimer();
             }
         }, IBleScanner.SCAN_PERIOD);
 
@@ -64,6 +64,16 @@ public abstract class BleScanner implements IBleScanner {
 
     @Override
     public void stopScan() {
+        if (!mScanning) {
+            return;
+        }
+
+        stopScanImpl();
+
+        mScanning = false;
+    }
+
+    public void stopScanByTimer() {
         if (!mScanning) {
             return;
         }

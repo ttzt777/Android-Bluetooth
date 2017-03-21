@@ -68,7 +68,7 @@ public class BleScannerV21 extends BleScanner{
 
         @Override
         public void onScanFailed(int errorCode) {
-            stopScan();
+            stopScanByTimer();
         }
     };
 }

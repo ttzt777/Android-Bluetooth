@@ -33,6 +33,8 @@ public interface BleScanContract {
     interface Presenter extends IPresenter<INavigator> {
         void startScan(boolean reScan);
 
+        void stopScan();
+
         boolean isBluetoothEnable();
     }
 }

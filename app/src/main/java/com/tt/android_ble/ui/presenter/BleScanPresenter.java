@@ -52,6 +52,11 @@ public class BleScanPresenter implements BleScanContract.Presenter, IBleScanner.
         bleScanner.startScan();
     }
 
+    @Override
+    public void stopScan() {
+        bleScanner.stopScan();
+    }
+
     public boolean isBluetoothEnable() {
         return bleScanner.isBluetoothEnable();
     }

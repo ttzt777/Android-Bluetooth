@@ -155,6 +155,7 @@ public class BleScanFragment extends BaseFragment
     public void onDestroyView() {
         Log.d(TAG, "onDestroyView: ");
         super.onDestroyView();
+        presenter.stopScan();
     }
 
     @Override
