@@ -26,5 +26,5 @@ public interface INavigator {
 
     void bleInitScanFragment(FragmentTransaction transaction);
 
-    void bleShowDetailFragment();
+    void bleShowDetailFragment(String name, String address);
 }

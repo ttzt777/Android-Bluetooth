@@ -68,6 +68,11 @@ public class BleScanPresenter implements BleScanContract.Presenter, IBleScanner.
         scanFinishProcess();
     }
 
+    public void clickDevice(int position) {
+        BluetoothDevice device = deviceList.get(position);
+        navigator.bleShowDetailFragment(device.getName(), device.getAddress());
+    }
+
     private void initBluetoothScanner() {
         BluetoothManager btManager = (BluetoothManager) navigator.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
         BluetoothAdapter bluetoothAdapter = btManager.getAdapter();

@@ -16,6 +16,8 @@ public interface BleDeviceDetailContract {
     }
 
     interface Presenter extends IPresenter<INavigator> {
+        boolean isBluetoothEnable();
+
         void connect();
 
         void disConnect();

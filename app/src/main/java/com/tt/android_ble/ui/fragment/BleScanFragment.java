@@ -217,7 +217,7 @@ public class BleScanFragment extends BaseFragment
 
     @Override
     public void onBleDeviceClick(int position) {
-
+        presenter.clickDevice(position);
     }
 
     @Override

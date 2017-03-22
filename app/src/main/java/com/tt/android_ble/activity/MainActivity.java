@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements INavigator{
     }
 
     @Override
-    public void bleShowDetailFragment() {
-        navigableStateContext.bleShowDevicesDetailFragment();
+    public void bleShowDetailFragment(String name, String address) {
+        navigableStateContext.bleShowDevicesDetailFragment(name, address);
     }
 }

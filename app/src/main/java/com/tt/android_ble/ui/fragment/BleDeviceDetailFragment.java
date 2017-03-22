@@ -1,5 +1,8 @@
 package com.tt.android_ble.ui.fragment;
 
+import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +20,8 @@ import com.tt.android_ble.ui.decoration.BleScanResultItemDecoration;
 import com.tt.android_ble.ui.presenter.BleDeviceDetailPresenter;
 
 import butterknife.BindView;
+
+import static com.tt.android_ble.ui.fragment.BleScanFragment.REQUEST_ENABLE_BT;
 
 /**
  * -------------------------------------------------
@@ -84,8 +89,29 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!presenter.isBluetoothEnable()) {
+            Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(intent, REQUEST_ENABLE_BT);
+            return;
+        }
+
+        presenter.connect();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
+            navigator.onBackPressed();
+            return;
+        }
     }
 
     @Override
@@ -110,7 +136,7 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
         connectingDialog.dismiss();
         connectingDialog = null;
 
-        mConnectStatus.setChecked(true);
+        //mConnectStatus.setChecked(true);
     }
 
     @Override

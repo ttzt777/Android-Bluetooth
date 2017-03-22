@@ -68,8 +68,8 @@ public class NavigableStateContext {
         changeFragment(BleScanFragment.newInstance(), transaction,  R.id.fl_ble_content, null, true);
     }
 
-    public void bleShowDevicesDetailFragment() {
-        changeFragment(BleDeviceDetailFragment.newInstance(), null, R.id.fl_ble_content, Transitions.ENTER_FORM_RIGHT, true);
+    public void bleShowDevicesDetailFragment(String name, String address) {
+        changeFragment(BleDeviceDetailFragment.newInstance(name, address), null, R.id.fl_ble_content, Transitions.ENTER_FORM_RIGHT, true);
     }
 
     private void changeFragment(Fragment fragment) {

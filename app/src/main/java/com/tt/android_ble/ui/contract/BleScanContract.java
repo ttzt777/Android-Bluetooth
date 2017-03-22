@@ -36,5 +36,7 @@ public interface BleScanContract {
         void stopScan();
 
         boolean isBluetoothEnable();
+
+        void clickDevice(int position);
     }
 }
