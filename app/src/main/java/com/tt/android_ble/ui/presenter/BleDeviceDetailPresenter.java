@@ -37,6 +37,10 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
 
     @Override
     public void connect() {
+        if (bleController.getConnectionState() == BleController.STATE_CONNECTED
+                || bleController.getConnectionState() == BleController.STATE_CONNECTING) {
+            return;
+        }
         view.showConnecting();
 
         bleController.connect(deviceAddress);
@@ -44,7 +48,19 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
 
     @Override
     public void disConnect() {
+        if (bleController.getConnectionState() == BleController.STATE_DISCONNECTED) {
+            return;
+        }
+        bleController.disConnect();
+    }
 
+    @Override
+    public void onDestroy() {
+        if (bleController.getConnectionState() == BleController.STATE_CONNECTED
+                || bleController.getConnectionState() == BleController.STATE_CONNECTING) {
+            bleController.disConnect();
+        }
+        bleController.close();
     }
 
     @Override
@@ -54,7 +70,7 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
 
     @Override
     public void onDisConnect() {
-
+        view.showDisConnectLayout();
     }
 
     @Override

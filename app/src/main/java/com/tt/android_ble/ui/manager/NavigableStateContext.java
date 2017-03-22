@@ -65,7 +65,7 @@ public class NavigableStateContext {
     }
 
     public void bleInitScanFragment(FragmentTransaction transaction) {
-        changeFragment(BleScanFragment.newInstance(), transaction,  R.id.fl_ble_content, null, true);
+        changeFragment(BleScanFragment.newInstance(), transaction,  R.id.fl_ble_content, null, false);
     }
 
     public void bleShowDevicesDetailFragment(String name, String address) {

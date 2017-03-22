@@ -18,6 +18,7 @@
 
     <string name="bt_need_location_permission">扫描附近的蓝牙设备需要位置权限，请点击设置打开对应的权限。</string>
 
+    <string name="ble_unknown_device">未命名设备</string>
     <string name="ble_scan_index">正在扫描附近BLE设备，请稍后...</string>
     <string name="ble_scan_noResult">附近没有BLE设备哦！</string>
     <string name="ble_scan_scan_again">点我重新扫描哦</string>

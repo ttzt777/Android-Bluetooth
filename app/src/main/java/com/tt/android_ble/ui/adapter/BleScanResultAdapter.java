@@ -51,7 +51,11 @@ public class BleScanResultAdapter extends RecyclerView.Adapter<BleScanResultAdap
     public void onBindViewHolder(ViewHolder holder, final int position) {
         final BluetoothDevice device = deviceList.get(position);
 
-        holder.mName.setText(device.getName());
+        if (device.getName() == null) {
+            holder.mName.setText(holder.mName.getContext().getResources().getString(R.string.ble_unknown_device));
+        } else {
+            holder.mName.setText(device.getName());
+        }
         holder.mAddress.setText(device.getAddress());
 
         holder.mMore.setOnClickListener(new View.OnClickListener() {

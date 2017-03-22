@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothManager;
 import android.content.Context;
 import android.os.Build;
 
+import com.tt.android_ble.R;
 import com.tt.android_ble.bluetooth.le.BleScannerV18;
 import com.tt.android_ble.bluetooth.le.BleScannerV21;
 import com.tt.android_ble.bluetooth.le.IBleScanner;
@@ -70,7 +71,11 @@ public class BleScanPresenter implements BleScanContract.Presenter, IBleScanner.
 
     public void clickDevice(int position) {
         BluetoothDevice device = deviceList.get(position);
-        navigator.bleShowDetailFragment(device.getName(), device.getAddress());
+        String name = device.getName();
+        if (name == null) {
+            name = navigator.getActivity().getResources().getString(R.string.ble_unknown_device);
+        }
+        navigator.bleShowDetailFragment(name, device.getAddress());
     }
 
     private void initBluetoothScanner() {

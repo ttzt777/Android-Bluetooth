@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -43,7 +44,7 @@ import butterknife.OnClick;
  * -------------------------------------------------
  */
 public class BleScanFragment extends BaseFragment
-        implements BleScanContract.View, BleScanResultAdapter.Callback {
+        implements BleScanContract.View, BleScanResultAdapter.Callback, SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = BleScanFragment.class.getSimpleName();
 
     public static final int REQUEST_ENABLE_BT = 1;
@@ -51,13 +52,11 @@ public class BleScanFragment extends BaseFragment
     @BindView(R.id.ll_ble_scanning_layout)
     LinearLayout mScanningLayout;
 
-    @BindView(R.id.rv_ble_scan_result)
-    RecyclerView mRecyclerView;
+    @BindView(R.id.srl_ble_scan_refresh)
+    SwipeRefreshLayout mResultLayout;
 
     @BindView(R.id.ll_no_result_layout)
     LinearLayout mNoResultLayout;
-
-    private boolean refreshMenuDis = false;
 
     private BleScanContract.Presenter presenter;
 
@@ -85,15 +84,16 @@ public class BleScanFragment extends BaseFragment
         super.onViewCreated(view, savedInstanceState);
 
         adapter = new BleScanResultAdapter(this);
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_ble_scan_result);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.addItemDecoration(new BleScanResultItemDecoration());
         mRecyclerView.setAdapter(adapter);
 
+        mResultLayout.setOnRefreshListener(this);
+
         displayScanningLayout();
 
         presenter = new BleScanPresenter(this, navigator);
-
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -113,22 +113,6 @@ public class BleScanFragment extends BaseFragment
         }
 
         presenter.startScan(false);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_ble_scan, menu);
-        menu.getItem(0).setVisible(refreshMenuDis);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_ble_scan_refresh) {
-            presenter.startScan(true);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -183,36 +167,38 @@ public class BleScanFragment extends BaseFragment
     @Override
     public void displayScanningLayout() {
         mScanningLayout.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.GONE);
+        mResultLayout.setVisibility(View.GONE);
         mNoResultLayout.setVisibility(View.GONE);
 
-        refreshMenuDis = false;
-        navigator.updateOptionsMenu();
+        mResultLayout.setRefreshing(false);
     }
 
     @Override
     public void displayNoResultLayout() {
         mScanningLayout.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.GONE);
+        mResultLayout.setVisibility(View.GONE);
         mNoResultLayout.setVisibility(View.VISIBLE);
 
-        refreshMenuDis = false;
-        navigator.updateOptionsMenu();
+        mResultLayout.setRefreshing(false);
     }
 
     @Override
     public void displayResultLayout() {
         mScanningLayout.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
+        mResultLayout.setVisibility(View.VISIBLE);
         mNoResultLayout.setVisibility(View.GONE);
 
-        refreshMenuDis = true;
-        navigator.updateOptionsMenu();
+        mResultLayout.setRefreshing(false);
     }
 
     @Override
     public void updateData(List<BluetoothDevice> deviceList) {
         adapter.updateData(deviceList);
+    }
+
+    @Override
+    public void onRefresh() {
+        presenter.startScan(true);
     }
 
     @Override

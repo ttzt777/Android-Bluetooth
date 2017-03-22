@@ -21,5 +21,7 @@ public interface BleDeviceDetailContract {
         void connect();
 
         void disConnect();
+
+        void onDestroy();
     }
 }

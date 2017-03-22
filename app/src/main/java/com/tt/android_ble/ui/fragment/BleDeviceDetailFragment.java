@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.UiThread;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -79,8 +80,6 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
         init(savedInstanceState);
 
         presenter = new BleDeviceDetailPresenter(this, mDeviceAddress.getText().toString(), navigator);
-
-        presenter.connect();
     }
 
     @Override
@@ -104,6 +103,12 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
     @Override
     public void onStop() {
         super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        presenter.onDestroy();
+        super.onDestroy();
     }
 
     @Override
@@ -136,12 +141,22 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
         connectingDialog.dismiss();
         connectingDialog = null;
 
-        //mConnectStatus.setChecked(true);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mConnectStatus.setChecked(true);
+            }
+        });
     }
 
     @Override
     public void showDisConnectLayout() {
+        if (connectingDialog != null && connectingDialog.isShowing()) {
+            connectingDialog.dismiss();
+            connectingDialog = null;
+        }
 
+        mConnectStatus.setChecked(false);
     }
 
     private void init(@Nullable Bundle savedInstanceState) {
