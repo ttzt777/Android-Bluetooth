@@ -6,9 +6,12 @@ import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
+import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.util.Log;
+
+import java.util.List;
 
 /**
  * Created by zhaotao on 2017/3/21.
@@ -72,6 +75,7 @@ public class BleController {
         btGatt = device.connectGatt(context, false, mGattCallback);
         Log.d(TAG, "Trying to create a new connection.");
         mConnectionState = STATE_CONNECTING;
+        previousDeviceAddress = address;
         return true;
     }
 
@@ -82,6 +86,14 @@ public class BleController {
         }
 
         btGatt.disconnect();
+    }
+
+    public List<BluetoothGattService> getSupportServices() {
+        if (btGatt == null) {
+            return null;
+        }
+
+        return btGatt.getServices();
     }
 
     /**
@@ -113,7 +125,11 @@ public class BleController {
 
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
-            super.onServicesDiscovered(gatt, status);
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                listener.onServicesDiscover();
+            } else {
+                Log.e(TAG, "onServicesDiscovered receive: " + status);
+            }
         }
 
         @Override
@@ -145,6 +161,6 @@ public class BleController {
     public interface Callback {
         void onConnect();
         void onDisConnect();
-        void onServicesDiscover(BluetoothGatt gatt);
+        void onServicesDiscover();
     }
 }

@@ -5,7 +5,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.UiThread;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -144,7 +143,7 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mConnectStatus.setChecked(true);
+                toggleStatus(true);
             }
         });
     }
@@ -156,8 +155,15 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
             connectingDialog = null;
         }
 
-        mConnectStatus.setChecked(false);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                toggleStatus(false);
+            }
+        });
     }
+
+
 
     private void init(@Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
