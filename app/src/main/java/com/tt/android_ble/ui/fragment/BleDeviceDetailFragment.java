@@ -14,10 +14,15 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.tt.android_ble.R;
+import com.tt.android_ble.bean.BleCharacteristicInfo;
+import com.tt.android_ble.bean.BleServiceInfo;
 import com.tt.android_ble.ui.adapter.BleDeviceServicesAdapter;
+import com.tt.android_ble.ui.adapter.ExpandAdapter;
 import com.tt.android_ble.ui.contract.BleDeviceDetailContract;
 import com.tt.android_ble.ui.decoration.BleScanResultItemDecoration;
 import com.tt.android_ble.ui.presenter.BleDeviceDetailPresenter;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -163,7 +168,11 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
         });
     }
 
-
+    @Override
+    public void showDeviceServicesInfo(List<ExpandAdapter.Entry<String, List<BleCharacteristicInfo>>> bleServiceInfoList) {
+        BleDeviceServicesAdapter bleDeviceServicesAdapter = new BleDeviceServicesAdapter(getContext(), bleServiceInfoList);
+        mServiceList.setAdapter(bleDeviceServicesAdapter);
+    }
 
     private void init(@Nullable Bundle savedInstanceState) {
         if (getArguments() != null) {
@@ -184,10 +193,8 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
             }
         });
 
-        adapter = new BleDeviceServicesAdapter();
         mServiceList.setLayoutManager(new LinearLayoutManager(getContext()));
         mServiceList.addItemDecoration(new BleScanResultItemDecoration());
-        mServiceList.setAdapter(adapter);
     }
 
     private void toggleStatus(boolean isConnected) {

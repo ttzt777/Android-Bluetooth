@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/list_secondary_height"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="72dp"
+        android:background="@color/app_driver_item" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="72dp"
+        android:layout_marginRight="36dp"
+        android:layout_centerVertical="true"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_ble_info_characteristic_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/app_text_primary"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textSize="16sp"
+            android:text="Unknown Characteristic"/>
+
+        <TextView
+            android:id="@+id/tv_ble_info_characteristic_uuid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:ellipsize="end"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/app_text_secondary"
+            android:textSize="12sp"
+            android:text="000000-00000-0000-0000000-00000-00000"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

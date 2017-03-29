@@ -33,7 +33,7 @@
             android:ellipsize="end"
             android:lines="1"
             android:text="AA:BB:CC:DD:EE:FF"
-            android:textColor="@color/app_text_subTitle"
+            android:textColor="@color/app_text_secondary"
             android:textSize="14sp" />
 
         <Switch
