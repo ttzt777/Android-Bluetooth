@@ -1,8 +1,6 @@
 package com.tt.android_ble.ui.contract;
 
-import com.tt.android_ble.bean.BleCharacteristicInfo;
 import com.tt.android_ble.bean.BleServiceInfo;
-import com.tt.android_ble.ui.adapter.ExpandAdapter;
 import com.tt.android_ble.ui.manager.INavigator;
 
 import java.util.List;
@@ -19,7 +17,7 @@ public interface BleDeviceDetailContract {
 
         void showDisConnectLayout();
 
-        void showDeviceServicesInfo(List<ExpandAdapter.Entry<String, List<BleCharacteristicInfo>>> bleServiceInfoList);
+        void showDeviceServicesInfo(List<BleServiceInfo> bleServiceInfoList);
     }
 
     interface Presenter extends IPresenter<INavigator> {
@@ -30,5 +28,7 @@ public interface BleDeviceDetailContract {
         void disConnect();
 
         void onDestroy();
+
+        List<BleServiceInfo> getServiceList();
     }
 }

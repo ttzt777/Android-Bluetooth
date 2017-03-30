@@ -11,6 +11,8 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.util.Log;
 
+import com.tt.android_ble.bean.BleServiceInfo;
+
 import java.util.List;
 
 /**

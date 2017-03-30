@@ -8,16 +8,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.tt.android_ble.R;
-import com.tt.android_ble.bean.BleCharacteristicInfo;
 import com.tt.android_ble.bean.BleServiceInfo;
 import com.tt.android_ble.ui.adapter.BleDeviceServicesAdapter;
-import com.tt.android_ble.ui.adapter.ExpandAdapter;
 import com.tt.android_ble.ui.contract.BleDeviceDetailContract;
 import com.tt.android_ble.ui.decoration.BleScanResultItemDecoration;
 import com.tt.android_ble.ui.presenter.BleDeviceDetailPresenter;
@@ -39,7 +38,7 @@ import static com.tt.android_ble.ui.fragment.BleScanFragment.REQUEST_ENABLE_BT;
  * V0.0.1 --
  * -------------------------------------------------
  */
-public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDetailContract.View{
+public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDetailContract.View, BleDeviceServicesAdapter.Callback{
     private static final String TAG = BleDeviceDetailFragment.class.getSimpleName();
 
     private static final String DEVICE_NAME = "device_name";
@@ -169,9 +168,18 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
     }
 
     @Override
-    public void showDeviceServicesInfo(List<ExpandAdapter.Entry<String, List<BleCharacteristicInfo>>> bleServiceInfoList) {
-        BleDeviceServicesAdapter bleDeviceServicesAdapter = new BleDeviceServicesAdapter(getContext(), bleServiceInfoList);
-        mServiceList.setAdapter(bleDeviceServicesAdapter);
+    public void showDeviceServicesInfo(final List<BleServiceInfo> bleServiceInfoList) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.update(bleServiceInfoList);
+            }
+        });
+    }
+
+    @Override
+    public void onCharacteristicItemClick(int servicePosition, int characteristicPosition) {
+        Log.i(TAG, "characteristic uuid: " + presenter.getServiceList().get(servicePosition).getCharacteristicInfo(characteristicPosition).getUuid());
     }
 
     private void init(@Nullable Bundle savedInstanceState) {
@@ -193,8 +201,10 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
             }
         });
 
+        adapter = new BleDeviceServicesAdapter(this);
         mServiceList.setLayoutManager(new LinearLayoutManager(getContext()));
         mServiceList.addItemDecoration(new BleScanResultItemDecoration());
+        mServiceList.setAdapter(adapter);
     }
 
     private void toggleStatus(boolean isConnected) {

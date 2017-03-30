@@ -1,7 +1,6 @@
 package com.tt.android_ble.ui.presenter;
 
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
@@ -13,7 +12,6 @@ import android.util.Log;
 import com.tt.android_ble.bean.BleCharacteristicInfo;
 import com.tt.android_ble.bean.BleServiceInfo;
 import com.tt.android_ble.bluetooth.le.BleController;
-import com.tt.android_ble.ui.adapter.ExpandAdapter;
 import com.tt.android_ble.ui.contract.BleDeviceDetailContract;
 import com.tt.android_ble.ui.manager.INavigator;
 import com.tt.android_ble.util.BleUtil;
@@ -36,6 +34,8 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
 
     private INavigator navigator;
     private String deviceAddress;
+
+    List<BleServiceInfo> bleServiceInfoList;
 
     public BleDeviceDetailPresenter(BleDeviceDetailContract.View view, String deviceAddress, INavigator navigator) {
         this.view = view;
@@ -79,6 +79,11 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
     }
 
     @Override
+    public List<BleServiceInfo> getServiceList() {
+        return bleServiceInfoList;
+    }
+
+    @Override
     public void onConnect() {
         view.showConnectedLayout();
     }
@@ -95,8 +100,8 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
             return;
         }
 
-        List<ExpandAdapter.Entry<String, List<BleCharacteristicInfo>>> bleEntryList = getServiceInfoFromGattServices(supportServices);
-        view.showDeviceServicesInfo(bleEntryList);
+        bleServiceInfoList = getServiceInfoFromGattServices(supportServices);
+        view.showDeviceServicesInfo(bleServiceInfoList);
     }
 
     private void initBleController() {
@@ -111,9 +116,8 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
         bleController = new BleController(bluetoothAdapter, this);
     }
 
-    private List<ExpandAdapter.Entry<String, List<BleCharacteristicInfo>>> getServiceInfoFromGattServices(@NonNull List<BluetoothGattService> gattServices) {
+    private List<BleServiceInfo> getServiceInfoFromGattServices(@NonNull List<BluetoothGattService> gattServices) {
         List<BleServiceInfo> bleServiceInfoList = new ArrayList<>();
-        List<ExpandAdapter.Entry<String, List<BleCharacteristicInfo>>> bleEntryList = new ArrayList<>();
 
         for (BluetoothGattService gattService : gattServices) {
             String uuid = gattService.getUuid().toString();
@@ -161,10 +165,9 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
             }
 
             BleServiceInfo bleServiceInfo = new BleServiceInfo(uuid, type, characteristicInfoList);
-            ExpandAdapter.Entry<String, List<BleCharacteristicInfo>> entry = new ExpandAdapter.Entry<>(uuid, characteristicInfoList);
-            bleEntryList.add(entry);
+            bleServiceInfoList.add(bleServiceInfo);
         }
 
-        return bleEntryList;
+        return bleServiceInfoList;
     }
 }
