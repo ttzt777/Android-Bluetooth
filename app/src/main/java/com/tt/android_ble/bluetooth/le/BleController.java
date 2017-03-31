@@ -98,6 +98,24 @@ public class BleController {
         return btGatt.getServices();
     }
 
+    public void readCharateristis(BluetoothGattCharacteristic characteristic) {
+        if (btAdapter == null || btGatt == null) {
+            Log.e(TAG, "BluetoothAdapter not initialized.");
+            return;
+        }
+
+        btGatt.readCharacteristic(characteristic);
+    }
+
+    public void setCharacteristicNotifacation(BluetoothGattCharacteristic characteristic, boolean enable) {
+        if (btAdapter == null || btGatt == null) {
+            Log.e(TAG, "BluetoothAdapter not initialized.");
+            return;
+        }
+
+        btGatt.setCharacteristicNotification(characteristic, enable);
+    }
+
     /**
      * 使用完必须释放相应对象
      */

@@ -37,7 +37,7 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
     private INavigator navigator;
     private String deviceAddress;
 
-    List<BleServiceInfo> bleServiceInfoList;
+    private List<BluetoothGattService> supportServices;
 
     public BleDeviceDetailPresenter(BleDeviceDetailContract.View view, String deviceAddress, INavigator navigator) {
         this.view = view;
@@ -82,13 +82,26 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
 
     @Override
     public void onCharacteristicClick(int serviceIndex, int characteristicIndex) {
-        BleCharacteristicInfo characteristicInfo = bleServiceInfoList.get(serviceIndex).getCharacteristicInfo(characteristicIndex);
+        if (supportServices == null) {
+            Log.e(TAG, "supportServices is null.");
+            return;
+        }
 
-    }
+        Log.i(TAG, "characteristic uuid: " + supportServices.get(serviceIndex)
+                .getCharacteristics().get(characteristicIndex).getUuid());
 
-    @Override
-    public List<BleServiceInfo> getServiceList() {
-        return bleServiceInfoList;
+        BluetoothGattCharacteristic characteristic = supportServices.get(serviceIndex).getCharacteristics().get(characteristicIndex);
+        int charProperties = characteristic.getProperties();
+
+        if ((charProperties | BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
+            // 该特征可读，读取该特征数据
+            bleController.readCharateristis(characteristic);
+        }
+
+        if ((charProperties | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
+            // 可以通知，设置通知
+            bleController.setCharacteristicNotifacation(characteristic, true);
+        }
     }
 
     @Override
@@ -103,12 +116,12 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
 
     @Override
     public void onServicesDiscover() {
-        List<BluetoothGattService> supportServices = bleController.getSupportServices();
+        supportServices = bleController.getSupportServices();
         if (supportServices == null || supportServices.size() == 0) {
             return;
         }
 
-        bleServiceInfoList = getServiceInfoFromGattServices(supportServices);
+        List<BleServiceInfo> bleServiceInfoList = getServiceInfoFromGattServices();
         view.showDeviceServicesInfo(bleServiceInfoList);
     }
 
@@ -124,10 +137,10 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
         bleController = new BleController(bluetoothAdapter, this);
     }
 
-    private List<BleServiceInfo> getServiceInfoFromGattServices(@NonNull List<BluetoothGattService> gattServices) {
+    private List<BleServiceInfo> getServiceInfoFromGattServices() {
         List<BleServiceInfo> bleServiceInfoList = new ArrayList<>();
 
-        for (BluetoothGattService gattService : gattServices) {
+        for (BluetoothGattService gattService : supportServices) {
             String uuid = gattService.getUuid().toString();
             String type = BleUtil.getServiceType(gattService.getType());
             List<BleCharacteristicInfo> characteristicInfoList = new ArrayList<>();

@@ -54,7 +54,7 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
     Switch mConnectStatus;
 
     @BindView(R.id.tv_ble_detail_data)
-    TextView mCharateristicData;
+    TextView mCharacteristicData;
 
     @BindView(R.id.rv_ble_detail_list)
     RecyclerView mServiceList;
@@ -182,7 +182,6 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
 
     @Override
     public void onCharacteristicItemClick(int servicePosition, int characteristicPosition) {
-        Log.i(TAG, "characteristic uuid: " + presenter.getServiceList().get(servicePosition).getCharacteristicInfo(characteristicPosition).getUuid());
         presenter.onCharacteristicClick(servicePosition, characteristicPosition);
     }
 

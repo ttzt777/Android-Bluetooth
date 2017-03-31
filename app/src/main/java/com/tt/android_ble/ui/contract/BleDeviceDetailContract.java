@@ -30,7 +30,5 @@ public interface BleDeviceDetailContract {
         void onDestroy();
 
         void onCharacteristicClick(int serviceIndex, int characteristicIndex);
-
-        List<BleServiceInfo> getServiceList();
     }
 }
