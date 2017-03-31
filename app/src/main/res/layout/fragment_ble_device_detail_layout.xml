@@ -10,7 +10,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/tv_ble_detail_name"
@@ -20,7 +20,7 @@
             android:ellipsize="end"
             android:lines="1"
             android:text="Device Name"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/app_text_primary"
             android:textSize="18sp" />
 
         <TextView
@@ -42,9 +42,31 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:textColor="@color/app_text_tab"
             android:splitTrack="false"
             android:switchPadding="15dp"
             android:text="@string/ble_detail_connect_status" />
+
+        <TextView
+            android:id="@+id/tv_ble_detail_data_index"
+            android:layout_width="wrap_content"
+            android:layout_below="@id/tv_ble_detail_address"
+            android:layout_marginTop="10dp"
+            android:text="@string/ble_detail_characteristic_data"
+            android:textSize="12sp"
+            android:textColor="@color/app_text_secondary"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_ble_detail_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_ble_detail_address"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:lines="2"
+            android:textSize="12sp"
+            android:textColor="@color/app_text_secondary"
+            android:layout_toEndOf="@id/tv_ble_detail_data_index"/>
 
     </RelativeLayout>
 

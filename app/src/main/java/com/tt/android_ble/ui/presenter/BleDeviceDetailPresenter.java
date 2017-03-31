@@ -26,7 +26,9 @@ import java.util.List;
 public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Presenter, BleController.Callback {
     private static final String TAG = BleDeviceDetailPresenter.class.getSimpleName();
 
-    private static final boolean DEBUG = false;
+    private static final String BT05_UUID_STRING = "0000ffe1-0000-1000-8000-00805f9b34fb";
+
+    private static final boolean DEBUG = true;
 
     private BleDeviceDetailContract.View view;
 
@@ -76,6 +78,12 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
             bleController.disConnect();
         }
         bleController.close();
+    }
+
+    @Override
+    public void onCharacteristicClick(int serviceIndex, int characteristicIndex) {
+        BleCharacteristicInfo characteristicInfo = bleServiceInfoList.get(serviceIndex).getCharacteristicInfo(characteristicIndex);
+
     }
 
     @Override

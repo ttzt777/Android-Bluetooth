@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.tt.android_ble.R;
 import com.tt.android_ble.bean.BleServiceInfo;
+import com.tt.android_ble.util.BleUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,14 +51,20 @@ public class BleDeviceServicesAdapter extends ExpandAdapter<BleServiceInfo> {
     @Override
     public void onBindGroupViewHolder(RecyclerView.ViewHolder viewHolder, int groupPosition) {
         ServiceViewHolder serviceViewHolder = (ServiceViewHolder) viewHolder;
+        String uuid = getGroupInfo(groupPosition).getUuid();
+        String defaultName = viewHolder.itemView.getContext().getResources().getString(R.string.ble_unknown_service);
         serviceViewHolder.mExpand.setSelected(getGroupExpandStatus(groupPosition));
-        serviceViewHolder.mUuid.setText(getGroupInfo(groupPosition).getUuid());
+        serviceViewHolder.mName.setText(BleUtil.getNameViaUuid(uuid, defaultName));
+        serviceViewHolder.mUuid.setText(uuid);
     }
 
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder viewHolder, final int groupPosition, final int itemPosition) {
         CharacteristicViewHolder characteristicViewHolder = (CharacteristicViewHolder) viewHolder;
-        characteristicViewHolder.mUuid.setText(getGroupInfo(groupPosition).getCharacteristicInfo(itemPosition).getUuid());
+        String uuid = getGroupInfo(groupPosition).getCharacteristicInfo(itemPosition).getUuid();
+        String defaultName = viewHolder.itemView.getContext().getResources().getString(R.string.ble_unknown_characteristic);
+        characteristicViewHolder.mName.setText(BleUtil.getNameViaUuid(uuid, defaultName));
+        characteristicViewHolder.mUuid.setText(uuid);
         characteristicViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

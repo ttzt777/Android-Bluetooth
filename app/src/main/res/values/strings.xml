@@ -18,12 +18,15 @@
 
     <string name="bt_need_location_permission">扫描附近的蓝牙设备需要位置权限，请点击设置打开对应的权限。</string>
 
-    <string name="ble_unknown_device">未命名设备</string>
+    <string name="ble_unknown_device">不知名设备</string>
+    <string name="ble_unknown_service">不知名服务</string>
+    <string name="ble_unknown_characteristic">不知名特征</string>
     <string name="ble_scan_index">正在扫描附近BLE设备，请稍后...</string>
     <string name="ble_scan_noResult">附近没有BLE设备哦！</string>
     <string name="ble_scan_scan_again">点我重新扫描哦</string>
     <string name="ble_scan_exit">关闭蓝牙退出扫描</string>
     <string name="ble_detail_connect_status">连接状态</string>
+    <string name="ble_detail_characteristic_data">特征数据：</string>
 
     <string name="dialog_connecting">连接中，请稍后...</string>
 
