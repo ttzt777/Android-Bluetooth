@@ -35,7 +35,7 @@ public class BleScanPresenter implements BleScanContract.Presenter, IBleScanner.
 
     private List<BluetoothDevice> deviceList;
 
-    private boolean scanDone = false;
+    private BluetoothAdapter bluetoothAdapter;
 
     public BleScanPresenter(BleScanContract.View view, INavigator navigator) {
         this.view = view;
@@ -46,20 +46,30 @@ public class BleScanPresenter implements BleScanContract.Presenter, IBleScanner.
 
     @Override
     public void startScan(boolean reScan) {
+        if (bleScanner == null) {
+            initBluetoothScanner();
+        }
+
+
         if (!reScan && deviceList != null && !bleScanner.isScanning()) {
             return;
         }
+
         view.displayScanningLayout();
         bleScanner.startScan();
     }
 
     @Override
     public void stopScan() {
+        if (bleScanner == null) {
+            initBluetoothScanner();
+        }
+
         bleScanner.stopScan();
     }
 
     public boolean isBluetoothEnable() {
-        return bleScanner.isBluetoothEnable();
+        return bluetoothAdapter.isEnabled();
     }
 
     @Override
@@ -80,7 +90,7 @@ public class BleScanPresenter implements BleScanContract.Presenter, IBleScanner.
 
     private void initBluetoothScanner() {
         BluetoothManager btManager = (BluetoothManager) navigator.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
-        BluetoothAdapter bluetoothAdapter = btManager.getAdapter();
+        bluetoothAdapter = btManager.getAdapter();
 
         if (bluetoothAdapter == null) {
             view.finish();
@@ -88,6 +98,9 @@ public class BleScanPresenter implements BleScanContract.Presenter, IBleScanner.
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (bluetoothAdapter.getBluetoothLeScanner() == null) {
+                return;
+            }
             bleScanner = new BleScannerV21(bluetoothAdapter, this);
         } else {
             bleScanner = new BleScannerV18(bluetoothAdapter, this);

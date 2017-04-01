@@ -98,7 +98,11 @@ public class BleController {
         return btGatt.getServices();
     }
 
-    public void readCharateristis(BluetoothGattCharacteristic characteristic) {
+    /**
+     * @BluetoothGattCallback$onCharacteristicRead
+     * @param characteristic
+     */
+    public void readCharacteristic(BluetoothGattCharacteristic characteristic) {
         if (btAdapter == null || btGatt == null) {
             Log.e(TAG, "BluetoothAdapter not initialized.");
             return;
@@ -107,13 +111,22 @@ public class BleController {
         btGatt.readCharacteristic(characteristic);
     }
 
-    public void setCharacteristicNotifacation(BluetoothGattCharacteristic characteristic, boolean enable) {
+    public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic, boolean enable) {
         if (btAdapter == null || btGatt == null) {
             Log.e(TAG, "BluetoothAdapter not initialized.");
             return;
         }
 
         btGatt.setCharacteristicNotification(characteristic, enable);
+    }
+
+    public void writeCharacteristic(BluetoothGattCharacteristic characteristic) {
+        if (btAdapter == null || btGatt == null) {
+            Log.e(TAG, "BluetoothAdapter not initialized.");
+            return;
+        }
+
+        btGatt.writeCharacteristic(characteristic);
     }
 
     /**
@@ -143,6 +156,11 @@ public class BleController {
             }
         }
 
+        /**
+         * 调用BluetoothGatt.discoverServices()后，发现服务后的回调
+         * @param gatt
+         * @param status
+         */
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
@@ -152,19 +170,56 @@ public class BleController {
             }
         }
 
+        /**
+         * 发起读特性后的回调
+         * @param gatt
+         * @param characteristic
+         * @param status
+         */
         @Override
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            super.onCharacteristicRead(gatt, characteristic, status);
+            Log.i(TAG, "read " + characteristic.getUuid().toString() + " " + status);
+
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                dataAvailable(characteristic);
+            }
         }
 
+        /**
+         * 发送数据出去后的回调，特性为写的特性
+         * @param gatt
+         * @param characteristic
+         * @param status
+         */
         @Override
         public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            super.onCharacteristicWrite(gatt, characteristic, status);
+            byte[] data = characteristic.getValue();
+            if (null != data && data.length > 0) {
+                StringBuilder stringBuilder = new StringBuilder(data.length);
+                for (byte byteChar : data) {
+                    stringBuilder.append(String.format("%02X ", byteChar));
+                }
+
+                Log.i(TAG, "data receive: " + stringBuilder.toString());
+            }
         }
 
+        /**
+         * 开始通知后，数据变化回调，及接收数据
+         * @param gatt
+         * @param characteristic
+         */
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-            super.onCharacteristicChanged(gatt, characteristic);
+            byte[] data = characteristic.getValue();
+            if (null != data && data.length > 0) {
+                StringBuilder stringBuilder = new StringBuilder(data.length);
+                for (byte byteChar : data) {
+                    stringBuilder.append(String.format("%02X ", byteChar));
+                }
+
+                Log.i(TAG, "data receive: " + stringBuilder.toString());
+            }
         }
 
         @Override
@@ -178,9 +233,23 @@ public class BleController {
         }
     };
 
+    private void dataAvailable(BluetoothGattCharacteristic characteristic){
+        byte[] data = characteristic.getValue();
+        if (null != data && data.length > 0) {
+            StringBuilder stringBuilder = new StringBuilder(data.length);
+            for (byte byteChar : data) {
+                stringBuilder.append(String.format("%02X ", byteChar));
+            }
+
+            String availableData = new String(data) + "\n" + stringBuilder.toString();
+            listener.onDataAvailable(availableData);
+        }
+    }
+
     public interface Callback {
         void onConnect();
         void onDisConnect();
         void onServicesDiscover();
+        void onDataAvailable(String data);
     }
 }

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimaryDark">#3F51B5</color>
+    <!--<color name="colorPrimaryDark">#303F9F</color>-->
     <color name="colorAccent">#FF4081</color>
 
     <color name="app_background">#f2f4f5</color>
     <color name="app_tab_background">#fcfdfd</color>
-    <color name="app_module_bg_normal">#e6e8e9</color>
-    <color name="app_module_bg_pressed">#e3e3e3</color>
+    <color name="app_module_bg_normal">#f6f8f9</color>
+    <color name="app_module_bg_pressed">#e6e8e9</color>
 
     <color name="app_driver_module">#d9dbdc</color>
     <color name="app_driver_item">#e8e9e9</color>

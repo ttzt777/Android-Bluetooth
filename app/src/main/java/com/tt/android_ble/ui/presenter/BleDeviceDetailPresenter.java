@@ -93,14 +93,26 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
         BluetoothGattCharacteristic characteristic = supportServices.get(serviceIndex).getCharacteristics().get(characteristicIndex);
         int charProperties = characteristic.getProperties();
 
+        if (characteristic.getUuid().toString().equals(BT05_UUID_STRING)) {
+            characteristic.setValue("test for send data");
+            bleController.setCharacteristicNotification(characteristic, true);
+            bleController.writeCharacteristic(characteristic);
+            return;
+        }
+
         if ((charProperties | BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
-            // 该特征可读，读取该特征数据
-            bleController.readCharateristis(characteristic);
+            // 该特征可读，读取该特性数据
+            bleController.readCharacteristic(characteristic);
         }
 
         if ((charProperties | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
             // 可以通知，设置通知
-            bleController.setCharacteristicNotifacation(characteristic, true);
+            bleController.setCharacteristicNotification(characteristic, true);
+        }
+
+        if (characteristic.getUuid().toString().equals(BT05_UUID_STRING)) {
+            characteristic.setValue("test for send data");
+            bleController.writeCharacteristic(characteristic);
         }
     }
 
@@ -123,6 +135,11 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
 
         List<BleServiceInfo> bleServiceInfoList = getServiceInfoFromGattServices();
         view.showDeviceServicesInfo(bleServiceInfoList);
+    }
+
+    @Override
+    public void onDataAvailable(String data) {
+        view.showAvailableData(data);
     }
 
     private void initBleController() {
@@ -152,7 +169,7 @@ public class BleDeviceDetailPresenter implements BleDeviceDetailContract.Present
                 Log.i(TAG, "--> service uuid: " + gattService.getUuid());
             }
 
-            // Characteristic 特征的字段信息
+            // Characteristic 特性的字段信息
             List<BluetoothGattCharacteristic> gattCharacteristics = gattService.getCharacteristics();
             for (BluetoothGattCharacteristic gattCharacteristic : gattCharacteristics) {
                 String charUuid = gattCharacteristic.getUuid().toString();

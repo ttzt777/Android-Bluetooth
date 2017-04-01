@@ -2,6 +2,7 @@ package com.tt.android_ble.ui.fragment;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -134,8 +135,14 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
     public void showConnecting() {
         if (connectingDialog == null) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-            builder.setCancelable(false);
             builder.setView(R.layout.dialog_connect_to_device);
+            builder.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    presenter.disConnect();
+                    showDisConnectLayout();
+                }
+            });
             connectingDialog = builder.create();
         }
 
@@ -166,6 +173,8 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
             @Override
             public void run() {
                 toggleStatus(false);
+                mCharacteristicData.setText("");
+                mServiceList.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -176,6 +185,17 @@ public class BleDeviceDetailFragment extends BaseFragment implements BleDeviceDe
             @Override
             public void run() {
                 adapter.update(bleServiceInfoList);
+                mServiceList.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    @Override
+    public void showAvailableData(final String data) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mCharacteristicData.setText(data);
             }
         });
     }

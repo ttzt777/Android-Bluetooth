@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by sse-zhaotao on 2017/3/23.
+ * Created by tt on 2017/3/23.
  * 通用UUID参考：http://blog.csdn.net/chenxh515/article/details/45723299
  */
 
@@ -61,7 +61,7 @@ public class BleUtil {
         attributes.put("00001802-0000-1000-8000-00805f9b34fb", "Immediate Alert Service");  // 立即提醒服务
         attributes.put("00001804-0000-1000-8000-00805f9b34fb", "Tx Power");                 // 发射功率
         attributes.put("0000180f-0000-1000-8000-00805f9b34fb", "Battery Service");          // 电池服务
-        attributes.put("0000180d-0000-1000-8000-00805f9b34fb", "Heart Rate Service");       // 心率服务
+        attributes.put("0000180d-0000-1000-8000-00805f9b34fb", "Heart Rate Service");       //
 
         /* ----------------------- Characteristic uuid ----------------------------- */
         //  in "Generic Access Profile"
@@ -81,7 +81,7 @@ public class BleUtil {
         attributes.put("00002a23-0000-1000-8000-00805f9b34fb", getString(11));      // 系统识别ID
         attributes.put("00002a50-0000-1000-8000-00805f9b34fb", getString(12));      // 三极管ID
 
-        // FIXME 以下UUID均为验证
+        // FIXME 以下UUID均未验证
         // in "Link Loss"
         attributes.put("00002a06-0000-1000-8000-00805f9b34fb", "Alert Level rw");           // 警戒级别，读写权限
 
@@ -93,6 +93,9 @@ public class BleUtil {
 
         // in "Battery Service"
         attributes.put("00002a19-0000-1000-8000-00805f9b34fb", "Battery Level");            // 电池电量
+
+        // in "Heart Rate Service"
+        attributes.put("00002a37-0000-1000-8000-00805f9b34fb", "Heart Rate Measurement");   // 电池电量
     }
     public static String getNameViaUuid(String uuid, String defaultName) {
         String name = attributes.get(uuid);

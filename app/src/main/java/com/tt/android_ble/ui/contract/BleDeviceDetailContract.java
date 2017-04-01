@@ -18,6 +18,8 @@ public interface BleDeviceDetailContract {
         void showDisConnectLayout();
 
         void showDeviceServicesInfo(List<BleServiceInfo> bleServiceInfoList);
+
+        void showAvailableData(String data);
     }
 
     interface Presenter extends IPresenter<INavigator> {

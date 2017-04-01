@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -107,9 +108,11 @@ public class BleScanFragment extends BaseFragment
             return;
         }
 
-        if (!PermissionHandler.checkPermissions(getActivity(), Constant.PERMISSION_LOCATION)) {
-            showOpenSettingDialog();
-            return;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if (!PermissionHandler.checkPermissions(getActivity(), Constant.PERMISSION_LOCATION)) {
+                showOpenSettingDialog();
+                return;
+            }
         }
 
         presenter.startScan(false);
