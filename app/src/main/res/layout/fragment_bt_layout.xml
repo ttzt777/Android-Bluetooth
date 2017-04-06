@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:clickable="true"
-    tools:context="com.tt.android_ble.ui.fragment.BleFragment">
+    tools:context="com.tt.android_ble.ui.fragment.BluetoothFragment">
 
     <include layout="@layout/view_status_bar" />
 
@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/tl_ble_toolbar"
+            android:id="@+id/tl_bt_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:popupTheme="@style/AppTheme.PopupOverlay">
@@ -26,7 +26,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <FrameLayout
-        android:id="@+id/fl_ble_content"
+        android:id="@+id/fl_bt_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"/>

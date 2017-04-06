@@ -14,7 +14,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * -------------------------------------------------
@@ -52,7 +51,7 @@ public class BleScanResultAdapter extends RecyclerView.Adapter<BleScanResultAdap
         final BluetoothDevice device = deviceList.get(position);
 
         if (device.getName() == null) {
-            holder.mName.setText(holder.mName.getContext().getResources().getString(R.string.ble_unknown_device));
+            holder.mName.setText(holder.mName.getContext().getResources().getString(R.string.bt_unknown_device));
         } else {
             holder.mName.setText(device.getName());
         }

@@ -1,32 +1,31 @@
 <resources>
     <string name="app_name">Android-BLE</string>
-    <string name="title_activity_main_layout">MainLayoutActivity</string>
+    <string name="app_title">蓝牙应用</string>
 
     <string name="app_warning">警告</string>
     <string name="app_ok">确定</string>
     <string name="app_setting">设置</string>
     <string name="app_cancel">取消</string>
 
+    <string name="title_ble">BLE</string>
+    <string name="title_spp">SPP</string>
+    <string name="title_audio">音频连接</string>
+    <string name="title_devices">我的设备</string>
+
     <string name="menu_refresh">刷新</string>
 
-    <string-array name="home_functions">
-        <item>BLE</item>
-        <item>SPP</item>
-        <item>音频连接</item>
-        <item>我的设备</item>
-    </string-array>
-
     <string name="bt_need_location_permission">扫描附近的蓝牙设备需要位置权限，请点击设置打开对应的权限。</string>
-
-    <string name="ble_unknown_device">不知名设备</string>
-    <string name="ble_unknown_service">不知名服务</string>
-    <string name="ble_unknown_characteristic">不知名特性</string>
-    <string name="ble_scan_index">正在扫描附近BLE设备，请稍后...</string>
-    <string name="ble_scan_noResult">附近没有BLE设备哦！</string>
-    <string name="ble_scan_scan_again">点我重新扫描哦</string>
-    <string name="ble_scan_exit">关闭蓝牙退出扫描</string>
-    <string name="ble_detail_connect_status">连接状态</string>
-    <string name="ble_detail_characteristic_data">特性数据：</string>
+    <string name="bt_unknown_device">不知名设备</string>
+    <string name="bt_unknown_service">不知名服务</string>
+    <string name="bt_unknown_characteristic">不知名特性</string>
+    <string name="bt_ble_scan_index">正在扫描附近BLE设备，请稍后...</string>
+    <string name="bt_device_scan_index">正在扫描附近蓝牙设备，请稍后...</string>
+    <string name="bt_ble_scan_noResult">附近没有BLE设备哦！</string>
+    <string name="bt_device_scan_noResult">附近没有蓝牙设备哦！</string>
+    <string name="bt_scan_scan_again">点我重新扫描哦</string>
+    <string name="bt_scan_exit">关闭蓝牙退出扫描</string>
+    <string name="bt_connect_status">连接状态</string>
+    <string name="bt_ble_characteristic_data">特性数据：</string>
 
     <string name="dialog_connecting">连接中，请稍后...</string>
 

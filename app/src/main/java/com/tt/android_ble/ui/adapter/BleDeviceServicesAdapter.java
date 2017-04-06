@@ -52,7 +52,7 @@ public class BleDeviceServicesAdapter extends ExpandAdapter<BleServiceInfo> {
     public void onBindGroupViewHolder(RecyclerView.ViewHolder viewHolder, int groupPosition) {
         ServiceViewHolder serviceViewHolder = (ServiceViewHolder) viewHolder;
         String uuid = getGroupInfo(groupPosition).getUuid();
-        String defaultName = viewHolder.itemView.getContext().getResources().getString(R.string.ble_unknown_service);
+        String defaultName = viewHolder.itemView.getContext().getResources().getString(R.string.bt_unknown_service);
         serviceViewHolder.mExpand.setSelected(getGroupExpandStatus(groupPosition));
         serviceViewHolder.mName.setText(BleUtil.getNameViaUuid(uuid, defaultName));
         serviceViewHolder.mUuid.setText(uuid);
@@ -62,7 +62,7 @@ public class BleDeviceServicesAdapter extends ExpandAdapter<BleServiceInfo> {
     public void onBindItemViewHolder(RecyclerView.ViewHolder viewHolder, final int groupPosition, final int itemPosition) {
         CharacteristicViewHolder characteristicViewHolder = (CharacteristicViewHolder) viewHolder;
         String uuid = getGroupInfo(groupPosition).getCharacteristicInfo(itemPosition).getUuid();
-        String defaultName = viewHolder.itemView.getContext().getResources().getString(R.string.ble_unknown_characteristic);
+        String defaultName = viewHolder.itemView.getContext().getResources().getString(R.string.bt_unknown_characteristic);
         characteristicViewHolder.mName.setText(BleUtil.getNameViaUuid(uuid, defaultName));
         characteristicViewHolder.mUuid.setText(uuid);
         characteristicViewHolder.itemView.setOnClickListener(new View.OnClickListener() {

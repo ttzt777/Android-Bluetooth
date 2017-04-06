@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,18 +11,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
 import com.tt.android_ble.R;
 import com.tt.android_ble.app.Constant;
 import com.tt.android_ble.ui.adapter.BleScanResultAdapter;
-import com.tt.android_ble.ui.contract.BleScanContract;
+import com.tt.android_ble.ui.contract.BtScanContract;
 import com.tt.android_ble.ui.decoration.BleScanResultItemDecoration;
 import com.tt.android_ble.ui.presenter.BleScanPresenter;
+import com.tt.android_ble.ui.presenter.BtScanPresenter;
 import com.tt.android_ble.util.AppUtil;
 import com.tt.android_ble.util.DialogUtil;
 import com.tt.android_ble.util.PermissionHandler;
@@ -44,39 +41,34 @@ import butterknife.OnClick;
  * V0.0.1 --
  * -------------------------------------------------
  */
-public class BleScanFragment extends BaseFragment
-        implements BleScanContract.View, BleScanResultAdapter.Callback, SwipeRefreshLayout.OnRefreshListener {
-    private static final String TAG = BleScanFragment.class.getSimpleName();
+public class BTScanFragment extends BaseFragment
+        implements BtScanContract.View, BleScanResultAdapter.Callback, SwipeRefreshLayout.OnRefreshListener {
+    private static final String TAG = BTScanFragment.class.getSimpleName();
 
     public static final int REQUEST_ENABLE_BT = 1;
 
-    @BindView(R.id.ll_ble_scanning_layout)
+    @BindView(R.id.ll_bt_scanning_layout)
     LinearLayout mScanningLayout;
 
-    @BindView(R.id.srl_ble_scan_refresh)
+    @BindView(R.id.srl_bt_scan_refresh)
     SwipeRefreshLayout mResultLayout;
 
     @BindView(R.id.ll_no_result_layout)
     LinearLayout mNoResultLayout;
 
-    private BleScanContract.Presenter presenter;
+    private BtScanContract.Presenter presenter;
 
     private BleScanResultAdapter adapter;
 
-    public BleScanFragment() {
+    public BTScanFragment() {
     }
 
-    public static BleScanFragment newInstance() {
-        BleScanFragment fragment = new BleScanFragment();
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG, "onCreate: ");
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+    public static BTScanFragment newInstance(Bundle args) {
+        BTScanFragment fragment = new BTScanFragment();
+        if (args != null) {
+            fragment.setArguments(args);
         }
+        return fragment;
     }
 
     @Override
@@ -94,12 +86,11 @@ public class BleScanFragment extends BaseFragment
 
         displayScanningLayout();
 
-        presenter = new BleScanPresenter(this, navigator);
+        initPresenter();
     }
 
     @Override
     public void onResume() {
-        Log.d(TAG, "onResume: ");
         super.onResume();
 
         if (!presenter.isBluetoothEnable()) {
@@ -127,39 +118,14 @@ public class BleScanFragment extends BaseFragment
     }
 
     @Override
-    public void onStart() {
-        Log.d(TAG, "onStart: ");
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        Log.d(TAG, "onStop: ");
-        super.onStop();
-    }
-
-    @Override
     public void onDestroyView() {
-        Log.d(TAG, "onDestroyView: ");
         super.onDestroyView();
         presenter.stopScan();
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        Log.d(TAG, "onConfigurationChanged: ");
-        super.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.d(TAG, "onDestroy: ");
-        super.onDestroy();
-    }
-
-    @Override
     public int getLayoutId() {
-        return R.layout.fragment_ble_scan_layout;
+        return R.layout.fragment_bt_scan_layout;
     }
 
     @Override
@@ -214,14 +180,28 @@ public class BleScanFragment extends BaseFragment
 
     }
 
-    @OnClick(R.id.bt_ble_scan_again)
+    @OnClick(R.id.bt_bt_scan_again)
     public void onScanAgainClick() {
         presenter.startScan(true);
     }
 
-    @OnClick(R.id.bt_ble_exit)
+    @OnClick(R.id.bt_bt_exit)
     public void onExitClick() {
         navigator.onBackPressed();
+    }
+
+    private void initPresenter() {
+        if (getArguments() != null) {
+            if (getArguments().getInt(BluetoothFragment.BT_TYPE) == BluetoothFragment.TYPE_SPP) {
+                presenter = new BtScanPresenter(this, navigator);
+            } else if (getArguments().getInt(BluetoothFragment.BT_TYPE) == BluetoothFragment.TYPE_AUDIO) {
+                presenter = new BleScanPresenter(this, navigator);
+            } else {
+                presenter = new BleScanPresenter(this, navigator);
+            }
+        }  else {
+            presenter = new BleScanPresenter(this, navigator);
+        }
     }
 
     private void showOpenSettingDialog() {

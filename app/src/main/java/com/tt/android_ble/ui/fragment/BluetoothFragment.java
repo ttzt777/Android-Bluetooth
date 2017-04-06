@@ -4,8 +4,6 @@ package com.tt.android_ble.ui.fragment;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,25 +12,34 @@ import android.widget.LinearLayout;
 
 import com.tt.android_ble.R;
 import com.tt.android_ble.util.DensityUtil;
-import com.tt.android_ble.util.PermissionHandler;
 
 import butterknife.BindView;
 
-public class BleFragment extends BaseFragment {
-    private static final String TAG = BleFragment.class.getSimpleName();
+public class BluetoothFragment extends BaseFragment {
+    private static final String TAG = BluetoothFragment.class.getSimpleName();
+
+    public static final String BT_TYPE = "bt_type";
+    public static final int TYPE_BLE = 0;
+    public static final int TYPE_SPP = 1;
+    public static final int TYPE_AUDIO = 2;
 
     @BindView(R.id.view_status_bar)
     View mStatusBar;
 
-    @BindView(R.id.tl_ble_toolbar)
+    @BindView(R.id.tl_bt_toolbar)
     Toolbar toolbar;
 
-    public BleFragment() {
+    private int currentType = TYPE_BLE;
+
+    public BluetoothFragment() {
         // Required empty public constructor
     }
 
-    public static BleFragment newInstance() {
-        BleFragment fragment = new BleFragment();
+    public static BluetoothFragment newInstance(int type) {
+        BluetoothFragment fragment = new BluetoothFragment();
+        Bundle args = new Bundle();
+        args.putInt(BT_TYPE, type);
+        fragment.setArguments(args);
         return fragment;
     }
 
@@ -41,6 +48,10 @@ public class BleFragment extends BaseFragment {
         Log.d(TAG, "onCreate: ");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            currentType = getArguments().getInt(BT_TYPE, TYPE_BLE);
+            if (!(currentType >= TYPE_BLE && currentType <= TYPE_AUDIO)) {
+                throw new RuntimeException(BluetoothFragment.class.getSimpleName() + "current bt type error.");
+            }
         }
     }
 
@@ -55,10 +66,10 @@ public class BleFragment extends BaseFragment {
 
         setupToolbar();
 
-        if (!checkSavedFragment(savedInstanceState) && getChildFragmentManager().findFragmentById(R.id.fl_ble_content) == null) {
-            navigator.bleInitScanFragment(getChildFragmentManager().beginTransaction());
+        if (!checkSavedFragment(savedInstanceState) && getChildFragmentManager().findFragmentById(R.id.fl_bt_content) == null) {
+            navigator.btInitScanFragment(getChildFragmentManager().beginTransaction(), getArguments());
 //            FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-//            transaction.replace(R.id.fl_ble_content, BleScanFragment.newInstance(), BleScanFragment.class.getSimpleName());
+//            transaction.replace(R.id.fl_ble_content, BTScanFragment.newInstance(), BTScanFragment.class.getSimpleName());
 //            transaction.commitAllowingStateLoss();
         }
     }
@@ -108,7 +119,7 @@ public class BleFragment extends BaseFragment {
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_ble_layout;
+        return R.layout.fragment_bt_layout;
     }
 
     private void setupToolbar() {
@@ -120,7 +131,14 @@ public class BleFragment extends BaseFragment {
                 navigator.onBackPressed();
             }
         });
-        toolbar.setTitle("BLE");
+
+        if (currentType == TYPE_AUDIO) {
+            toolbar.setTitle("音频");
+        } else if (currentType == TYPE_SPP) {
+            toolbar.setTitle("SPP");
+        } else {
+            toolbar.setTitle("BLE");
+        }
     }
 
     private boolean checkSavedFragment(Bundle savedInstanceState) {

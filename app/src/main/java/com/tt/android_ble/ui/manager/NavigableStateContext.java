@@ -1,5 +1,6 @@
 package com.tt.android_ble.ui.manager;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -7,9 +8,9 @@ import android.util.Log;
 import com.tt.android_ble.R;
 import com.tt.android_ble.activity.MainActivity;
 import com.tt.android_ble.ui.anim.Transitions;
+import com.tt.android_ble.ui.fragment.BTScanFragment;
 import com.tt.android_ble.ui.fragment.BleDeviceDetailFragment;
-import com.tt.android_ble.ui.fragment.BleFragment;
-import com.tt.android_ble.ui.fragment.BleScanFragment;
+import com.tt.android_ble.ui.fragment.BluetoothFragment;
 import com.tt.android_ble.ui.fragment.HomeFragment;
 
 /**
@@ -44,15 +45,9 @@ public class NavigableStateContext {
     public void navigateToNextScreen(int navigator) {
         switch (navigator) {
             case NAVIGATOR_TO_BLE:
-                changeFragment(BleFragment.newInstance(), Transitions.ENTER_FORM_RIGHT, true);
-                break;
-
             case NAVIGATOR_TO_SPP:
-
-                break;
-
             case NAVIGATOR_TO_AUDIO:
-
+                changeFragment(BluetoothFragment.newInstance(navigator), Transitions.ENTER_FORM_RIGHT, true);
                 break;
 
             case NAVIGATOT_TO_DEVICES:
@@ -64,8 +59,8 @@ public class NavigableStateContext {
         }
     }
 
-    public void bleInitScanFragment(FragmentTransaction transaction) {
-        changeFragment(BleScanFragment.newInstance(), transaction,  R.id.fl_ble_content, null, false);
+    public void btInitScanFragment(FragmentTransaction transaction, Bundle args) {
+        changeFragment(BTScanFragment.newInstance(args), transaction,  R.id.fl_ble_content, null, false);
     }
 
     public void bleShowDevicesDetailFragment(String name, String address) {

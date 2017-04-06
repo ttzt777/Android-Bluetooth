@@ -17,7 +17,7 @@ import java.util.List;
  * V0.0.1 --
  * -------------------------------------------------
  */
-public interface BleScanContract {
+public interface BtScanContract {
     interface View {
         void finish();
 

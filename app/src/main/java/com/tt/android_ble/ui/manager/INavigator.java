@@ -1,6 +1,7 @@
 package com.tt.android_ble.ui.manager;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 
 /**
@@ -24,7 +25,7 @@ public interface INavigator {
 
     void openFunctionScreen(int navigator);
 
-    void bleInitScanFragment(FragmentTransaction transaction);
+    void btInitScanFragment(FragmentTransaction transaction, Bundle args);
 
     void bleShowDetailFragment(String name, String address);
 }

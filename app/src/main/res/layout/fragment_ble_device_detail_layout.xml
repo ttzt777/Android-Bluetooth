@@ -45,14 +45,14 @@
             android:textColor="@color/app_text_tab"
             android:splitTrack="false"
             android:switchPadding="15dp"
-            android:text="@string/ble_detail_connect_status" />
+            android:text="@string/bt_connect_status" />
 
         <TextView
             android:id="@+id/tv_ble_detail_data_index"
             android:layout_width="wrap_content"
             android:layout_below="@id/tv_ble_detail_address"
             android:layout_marginTop="10dp"
-            android:text="@string/ble_detail_characteristic_data"
+            android:text="@string/bt_ble_characteristic_data"
             android:textSize="12sp"
             android:textColor="@color/app_text_secondary"
             android:layout_height="wrap_content" />

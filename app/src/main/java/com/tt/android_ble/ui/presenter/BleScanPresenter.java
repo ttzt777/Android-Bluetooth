@@ -10,36 +10,21 @@ import com.tt.android_ble.R;
 import com.tt.android_ble.bluetooth.le.BleScannerV18;
 import com.tt.android_ble.bluetooth.le.BleScannerV21;
 import com.tt.android_ble.bluetooth.le.IBleScanner;
-import com.tt.android_ble.ui.contract.BleScanContract;
+import com.tt.android_ble.ui.contract.BtScanContract;
 import com.tt.android_ble.ui.manager.INavigator;
 
 import java.util.List;
 
 /**
- * -------------------------------------------------
- * Description：
- * Author：TT
- * Since：2017/3/8
- * Version：V0.0.1
- * -------------------------------------------------
- * History：
- * V0.0.1 --
- * -------------------------------------------------
+ *
  */
-public class BleScanPresenter implements BleScanContract.Presenter, IBleScanner.Callback {
-
-    private BleScanContract.View view;
-    private INavigator navigator;
-
+public class BleScanPresenter extends BtScanBasePresenter implements BtScanContract.Presenter, IBleScanner.Callback {
     private IBleScanner bleScanner;
-
-    private List<BluetoothDevice> deviceList;
 
     private BluetoothAdapter bluetoothAdapter;
 
-    public BleScanPresenter(BleScanContract.View view, INavigator navigator) {
-        this.view = view;
-        this.navigator = navigator;
+    public BleScanPresenter(BtScanContract.View view, INavigator navigator) {
+        super(view, navigator);
 
         initBluetoothScanner();
     }
@@ -50,8 +35,7 @@ public class BleScanPresenter implements BleScanContract.Presenter, IBleScanner.
             initBluetoothScanner();
         }
 
-
-        if (!reScan && deviceList != null && !bleScanner.isScanning()) {
+        if (reScan && deviceList != null && !bleScanner.isScanning()) {
             return;
         }
 
@@ -68,34 +52,35 @@ public class BleScanPresenter implements BleScanContract.Presenter, IBleScanner.
         bleScanner.stopScan();
     }
 
+    @Override
     public boolean isBluetoothEnable() {
         return bluetoothAdapter.isEnabled();
     }
 
     @Override
-    public void onScanFinish(List<BluetoothDevice> deviceList) {
-        this.deviceList = deviceList;
-
-        scanFinishProcess();
+    protected void scanFinished() {
+        super.scanFinished();
     }
 
     public void clickDevice(int position) {
         BluetoothDevice device = deviceList.get(position);
         String name = device.getName();
         if (name == null) {
-            name = navigator.getActivity().getResources().getString(R.string.ble_unknown_device);
+            name = navigator.getActivity().getResources().getString(R.string.bt_unknown_device);
         }
         navigator.bleShowDetailFragment(name, device.getAddress());
+    }
+
+    @Override
+    public void onScanFinish(List<BluetoothDevice> deviceList) {
+        this.deviceList = deviceList;
+
+        scanFinished();
     }
 
     private void initBluetoothScanner() {
         BluetoothManager btManager = (BluetoothManager) navigator.getActivity().getSystemService(Context.BLUETOOTH_SERVICE);
         bluetoothAdapter = btManager.getAdapter();
-
-        if (bluetoothAdapter == null) {
-            view.finish();
-            return;
-        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (bluetoothAdapter.getBluetoothLeScanner() == null) {
@@ -104,15 +89,6 @@ public class BleScanPresenter implements BleScanContract.Presenter, IBleScanner.
             bleScanner = new BleScannerV21(bluetoothAdapter, this);
         } else {
             bleScanner = new BleScannerV18(bluetoothAdapter, this);
-        }
-    }
-
-    private void scanFinishProcess() {
-        if (deviceList.size() == 0) {
-            view.displayNoResultLayout();
-        } else {
-            view.displayResultLayout();
-            view.updateData(deviceList);
         }
     }
 }

@@ -52,6 +52,10 @@ public class BluetoothAdmin {
         this.listener = listener;
     }
 
+    public boolean isBluetoothEnabled() {
+        return bluetoothAdapter.isEnabled();
+    }
+
     public void startScan() {
         startScan(SCAN_PERIOD);
     }
@@ -81,6 +85,14 @@ public class BluetoothAdmin {
         if (listener != null) {
             listener.onScanCompleted(deviceList);
         }
+    }
+
+    public boolean isScanning() {
+        if (mHandler == null) {
+            return false;
+        }
+
+        return true;
     }
 
     private BluetoothDevice getConnectedDevice() {

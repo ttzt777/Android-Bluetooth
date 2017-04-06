@@ -37,40 +37,10 @@ public class MainActivity extends AppCompatActivity implements INavigator{
     }
 
     @Override
-    protected void onStart() {
-        Log.d(TAG, "onStart: ");
-        super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        Log.d(TAG, "onResume: ");
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        Log.d(TAG, "onPause: ");
-        super.onPause();
-    }
-
-    @Override
-    protected void onStop() {
-        Log.d(TAG, "onStop: ");
-        super.onStop();
-    }
-
-    @Override
     protected void onDestroy() {
         Log.d(TAG, "onDestroy: ");
         navigableStateContext = null;
         super.onDestroy();
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        Log.d(TAG, "onSaveInstanceState: ");
-        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -99,8 +69,8 @@ public class MainActivity extends AppCompatActivity implements INavigator{
     }
 
     @Override
-    public void bleInitScanFragment(FragmentTransaction transaction) {
-        navigableStateContext.bleInitScanFragment(transaction);
+    public void btInitScanFragment(FragmentTransaction transaction, Bundle args) {
+        navigableStateContext.btInitScanFragment(transaction, args);
     }
 
     @Override

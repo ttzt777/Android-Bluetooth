@@ -24,7 +24,7 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/title_activity_main_layout"
+            android:label="@string/app_title"
             android:configChanges="orientation|screenSize"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme">
