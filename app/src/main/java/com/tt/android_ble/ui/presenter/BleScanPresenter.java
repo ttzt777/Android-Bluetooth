@@ -35,7 +35,7 @@ public class BleScanPresenter extends BtScanBasePresenter implements BtScanContr
             initBluetoothScanner();
         }
 
-        if (reScan && deviceList != null && !bleScanner.isScanning()) {
+        if (!reScan && deviceList != null && !bleScanner.isScanning()) {
             return;
         }
 

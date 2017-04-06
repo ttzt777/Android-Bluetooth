@@ -77,7 +77,7 @@ public class BTScanFragment extends BaseFragment
         super.onViewCreated(view, savedInstanceState);
 
         adapter = new BleScanResultAdapter(this);
-        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_ble_scan_result);
+        RecyclerView mRecyclerView = (RecyclerView) view.findViewById(R.id.rv_bt_scan_result);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.addItemDecoration(new BleScanResultItemDecoration());
         mRecyclerView.setAdapter(adapter);

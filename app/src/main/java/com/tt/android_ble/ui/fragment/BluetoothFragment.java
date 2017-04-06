@@ -111,7 +111,7 @@ public class BluetoothFragment extends BaseFragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if (getChildFragmentManager().findFragmentById(R.id.fl_ble_content) == null) {
+        if (getChildFragmentManager().findFragmentById(R.id.fl_bt_content) == null) {
             outState.putBoolean("fragmentAlreadyInit", true);
         }
         super.onSaveInstanceState(outState);

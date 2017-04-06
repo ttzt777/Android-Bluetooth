@@ -60,11 +60,11 @@ public class NavigableStateContext {
     }
 
     public void btInitScanFragment(FragmentTransaction transaction, Bundle args) {
-        changeFragment(BTScanFragment.newInstance(args), transaction,  R.id.fl_ble_content, null, false);
+        changeFragment(BTScanFragment.newInstance(args), transaction,  R.id.fl_bt_content, null, false);
     }
 
     public void bleShowDevicesDetailFragment(String name, String address) {
-        changeFragment(BleDeviceDetailFragment.newInstance(name, address), null, R.id.fl_ble_content, Transitions.ENTER_FORM_RIGHT, true);
+        changeFragment(BleDeviceDetailFragment.newInstance(name, address), null, R.id.fl_bt_content, Transitions.ENTER_FORM_RIGHT, true);
     }
 
     private void changeFragment(Fragment fragment) {
