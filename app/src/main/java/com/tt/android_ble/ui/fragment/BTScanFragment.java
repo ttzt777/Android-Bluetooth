@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.tt.android_ble.R;
 import com.tt.android_ble.app.Constant;
@@ -50,11 +51,17 @@ public class BTScanFragment extends BaseFragment
     @BindView(R.id.ll_bt_scanning_layout)
     LinearLayout mScanningLayout;
 
+    @BindView(R.id.tv_scan_text)
+    TextView mScanText;
+
     @BindView(R.id.srl_bt_scan_refresh)
     SwipeRefreshLayout mResultLayout;
 
     @BindView(R.id.ll_no_result_layout)
     LinearLayout mNoResultLayout;
+
+    @BindView(R.id.tv_scan_no_result)
+    TextView mNoResultText;
 
     private BtScanContract.Presenter presenter;
 
@@ -86,7 +93,7 @@ public class BTScanFragment extends BaseFragment
 
         displayScanningLayout();
 
-        initPresenter();
+        init();
     }
 
     @Override
@@ -190,11 +197,18 @@ public class BTScanFragment extends BaseFragment
         navigator.onBackPressed();
     }
 
-    private void initPresenter() {
+    private void init() {
+        String scanningString = getResources().getString(R.string.bt_ble_scan_index);
+        String noResultString = getResources().getString(R.string.bt_ble_scan_noResult);
+
         if (getArguments() != null) {
             if (getArguments().getInt(BluetoothFragment.BT_TYPE) == BluetoothFragment.TYPE_SPP) {
+                scanningString = getResources().getString(R.string.bt_device_scan_index);
+                noResultString = getResources().getString(R.string.bt_device_scan_noResult);
                 presenter = new BtScanPresenter(this, navigator);
             } else if (getArguments().getInt(BluetoothFragment.BT_TYPE) == BluetoothFragment.TYPE_AUDIO) {
+                scanningString = getResources().getString(R.string.bt_device_scan_index);
+                noResultString = getResources().getString(R.string.bt_device_scan_noResult);
                 presenter = new BleScanPresenter(this, navigator);
             } else {
                 presenter = new BleScanPresenter(this, navigator);
@@ -202,6 +216,9 @@ public class BTScanFragment extends BaseFragment
         }  else {
             presenter = new BleScanPresenter(this, navigator);
         }
+
+        mScanText.setText(scanningString);
+        mNoResultText.setText(noResultString);
     }
 
     private void showOpenSettingDialog() {

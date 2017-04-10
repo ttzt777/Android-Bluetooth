@@ -19,6 +19,7 @@
             android:layout_centerInParent="true" />
 
         <TextView
+            android:id="@+id/tv_scan_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
@@ -56,6 +57,7 @@
             android:layout_weight="1">
 
             <TextView
+                android:id="@+id/tv_scan_no_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
